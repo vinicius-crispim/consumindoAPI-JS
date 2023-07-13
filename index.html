@@ -100,7 +100,7 @@
 
             <div class="formulario__campo">
                 <label class="campo__etiqueta" for="cep">CEP</label>
-                <input name="cep" id="cep" class="campo__escrita" required />
+                <input name="cep" id="cep" class="campo__escrita" onblur="searchCEP(this.value);" maxlength="9" required />
             </div>
 
             <div class="formulario__campo">
@@ -248,7 +248,7 @@
             </li>
         </ul>
     </footer>
-    <script src="./assets/script.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
