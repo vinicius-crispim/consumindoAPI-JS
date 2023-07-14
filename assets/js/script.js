@@ -11,19 +11,7 @@ function searchCEP(valor) {
 
     if (cep != "") {
         if (/^[0-9]{8}$/.test(cep)) {
-            try {
-                fetch(`https://viacep.com.br/ws/${cep}/json/`).
-                then(response => response.json()).
-                then(response => {
-                    if (response.erro){
-                        throw new Error('Este CEP não existe');
-                    }else {
-                        addAddress(response);
-                    }
-                })
-            } catch (error) {
-                console.log(error);
-            }
+            buscaEndereco()
         }
     }
 
@@ -42,5 +30,21 @@ function searchCEP(valor) {
         document.querySelector("#bairro").value = endereco.bairro;
         document.querySelector("#estado").value = endereco.uf;
         document.querySelector("#cidade").value = endereco.localidade;
+    }
+
+    //forma de evitar varios 'then' e muitas callbacks (Inferno de Callbacks)
+    async function buscaEndereco() {
+        try {
+            let consultaCEP = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            let consultaCEPConvertido = await consultaCEP.json();
+            if (consultaCEPConvertido.erro) {
+                throw new Error('Este CEP não existe');
+            }
+            addAddress(consultaCEPConvertido);
+
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 }
