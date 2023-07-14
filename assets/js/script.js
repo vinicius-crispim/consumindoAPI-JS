@@ -11,15 +11,19 @@ function searchCEP(valor) {
 
     if (cep != "") {
         if (/^[0-9]{8}$/.test(cep)) {
-            fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json()).
-            then(responseBody => {
-                if (responseBody.erro) {
-                    throw new Error('Este CEP não existe');
-                } else {
-                    addAddress(responseBody);
-
-                }
-            }).catch(erro => console.log(erro));
+            try {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`).
+                then(response => response.json()).
+                then(response => {
+                    if (response.erro){
+                        throw new Error('Este CEP não existe');
+                    }else {
+                        addAddress(response);
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
