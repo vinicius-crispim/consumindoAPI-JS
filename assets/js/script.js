@@ -13,8 +13,13 @@ function searchCEP(valor) {
         if (/^[0-9]{8}$/.test(cep)) {
             fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json()).
             then(responseBody => {
-                addAddress(responseBody);
-            });
+                if (responseBody.erro) {
+                    throw new Error('Este CEP não existe');
+                } else {
+                    addAddress(responseBody);
+
+                }
+            }).catch(erro => console.log(erro));
         }
     }
 
